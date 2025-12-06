@@ -185,3 +185,53 @@
 #     print("File already exists")
 
 
+# # write and read mode w+
+# file = open('learn-python\example.txt', 'w+')
+# file.write("This will overwrite the existing content2")
+# file.seek(0)
+# content = file.read()
+# print(content)
+# file.close()
+
+
+# # read a file using with statement: context manager
+# with open('learn-python\example.txt', 'r') as file:
+#     content = file.read()
+#     print(content)
+
+# reading csv
+# with open('learn-python\data.csv', 'r') as file:
+#     content = file.readlines()
+#     print(content)
+
+# import csv package
+# import csv
+# with open('learn-python\data.csv', 'r') as file:
+#     content = csv.reader(file)
+#     for row in content:
+#         print(row)
+# import csv
+# with open('learn-python\data.csv', 'r') as file:
+#     content = csv.DictReader(file)
+#     for row in content:
+#         print(row)
+
+
+# # Packages
+# from utilities import string_operations
+
+# product_names = "Shirt"
+# rst = string_operations.to_uppercase(product_names)
+# print(rst)
+
+# built in pakab=ges
+# import os
+# print(os.getcwd())
+
+# import sys 
+# print(sys.version)
+
+import json
+data = {"name": "tobi", "age":33}
+json_string = json.dumps(data)
+print(json_string)
