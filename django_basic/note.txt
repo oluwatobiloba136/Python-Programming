@@ -1,0 +1,43 @@
+pip install virtualenv 
+
+python -m venv env
+
+source env/Scripts/activate
+
+pip freeze
+
+
+django-admin startproject mysite
+
+python manage.py runserver
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR /'static'
+STATICFILES_DIRS = [
+    'mysite/static'
+]
+
+
+python manage.py startapp employees
+
+
+https://www.youtube.com/watch?v=XChRxYpGqIs&list=PLmEKHA8iFrmBZSO44dFaFTu0gqK-NC9GG (deploy Django on azure)
+
+python manage.py migrate
+
+python manage.py createsuperuser
+
+ pip install Pillow
+
+
+python.exe -m pip install --upgrade pip
+
+python manage.py makemigrations
+
+python manage.py migrate
+
+
+https://docs.djangoproject.com/en/5.2/howto/static-files/#serving-files-uploaded-by-a-user-during-development
+
+from django.conf import settings
+from django.conf.urls.static import static
