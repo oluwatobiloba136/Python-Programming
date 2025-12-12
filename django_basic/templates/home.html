@@ -20,32 +20,25 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
+      <th scope="col">Full name</th>
+      <th scope="col">Designation</th>
+      <th scope="col">Phone Number</th>
     </tr>
   </thead>
   <tbody>
+    {% for emp in employees %}
     <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+      <th >{{forloop.counter}}</th>
+      <!-- <th >{{emp.id}}</th> this is useful for primary key -->
+      <td><a href="{% url 'employee_detail' emp.id %}">{{emp.first_name}} {{emp.last_name}}</a></td>
+      <td>{{emp.designation}}</td>
+      <td>{{emp.phone_number}}</td>
     </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>John</td>
-      <td>Doe</td>
-      <td>@social</td>
-    </tr>
+   {% endfor %}
+   
   </tbody>
 </table>
     </div>
+    
 </body>
 </html>
