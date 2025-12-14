@@ -1,0 +1,48 @@
+pwd
+
+cd ToDo
+
+python -m venv env
+
+ls
+
+.\env\Scripts\activate
+
+pip install freeze
+
+django-admin startproject todo_main .
+
+python manage.py runserver
+
+python manage.py migrate
+
+python manage.py createsuperuser
+
+
+>> configure the home url
+>> create the views file: views.py
+>> set up the templates folder , then the template file  i.e. home.html
+>> set the TEMPLATES>>DIRs setting in the settings file to 'templates'
+
+python manage.py startapp todo
+
+register the app in INSTALLED_APPS in settings.py
+
+create your model
+
+register your model in admin.py : >>admin.site.register(Task)
+
+prepare your model to sync with the database: python manage.py makemigrations
+
+create the database tables: python manage.py migratenage.
+
+>>>
+
+customize the admin page: use ModelAdmin class (it is useful)
+
+>>>
+
+url patterns
+
+
+>>> crsf token in all forms : {% csrf_token %}
