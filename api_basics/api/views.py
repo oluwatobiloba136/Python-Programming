@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import Http404, JsonResponse
+from django_filters import OrderingFilter
 
 from students.models import Student
 from .serializers import StudentSerializer, EmployeeSerializer
@@ -11,6 +12,9 @@ from employees.models import Employee
 from rest_framework import mixins, generics, viewsets
 from blogs.models import Blog, Comment
 from blogs.serializers import BlogSerializer, CommentSerializer
+from .paginations import CustomPagination
+from employees.filters import EmployeeFilter
+from rest_framework.filters import SearchFilter
 # Create your views here.   
 
 
@@ -169,12 +173,17 @@ def studentDetailView(request, pk):
 class EmployeeViewset(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+    pagination_class = CustomPagination
+    filterset_class = EmployeeFilter
 
 
 # GENERICS
 class BlogsView(generics.ListCreateAPIView):
     queryset = Blog.objects.all()
     serializer_class = BlogSerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields = ['blog_title', 'blog_body']
+    ordering_fields = ['id', 'blog_title']
 
 class CommentsView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
