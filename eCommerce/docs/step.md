@@ -84,3 +84,17 @@ This provides create_user() and create_superuser() methods for safely creating u
 - run make migrate
 - run migrate
 - run the server again
+
+### Craete store app
+- create the Product class  using models.Model approach and class Meta
+- create the
+
+### Associate the product to the home.html
+- create the home views in the project level view  file that fetch the queryset of product
+
+
+
+### URL paatern and views for Store and store_by_category
+- create views for store and store_by_category
+
+### context processor
