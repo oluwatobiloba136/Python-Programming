@@ -5,13 +5,13 @@ import requests
 import pandas as pd
 
 # --------------------------------------------------------------
-# Configuration
+# Configuration (from your M code)
 # --------------------------------------------------------------
 BASE_URL = "https://www.ngxpulse.ng"
-RELATIVE_PATH = "/api/ngxdata/stocks"
+RELATIVE_PATH = "/api/news"
 API_KEY = "ngxpulse_lsv623iy4mh9do9j"
 
-OUTPUT_DIR = r"C:\NGX\DailyStocksData"   # target folder
+OUTPUT_DIR = r"C:\NGX\DailyStocksNews"   # target folder for CSV
 
 
 # --------------------------------------------------------------
@@ -28,66 +28,49 @@ response.raise_for_status()
 data = response.json()
 
 # --------------------------------------------------------------
-# Normalise response to list
+# Normalise response to list (handles list, {news: [...]}, or {data: [...]})
 # --------------------------------------------------------------
 if isinstance(data, list):
-    stocks = data
-elif isinstance(data, dict) and "stocks" in data:
-    stocks = data["stocks"]
+    news_list = data
+elif isinstance(data, dict) and "news" in data:
+    news_list = data["news"]
+elif isinstance(data, dict) and "data" in data:
+    news_list = data["data"]
 else:
     raise ValueError("Unexpected API response format.")
 
-df = pd.DataFrame(stocks)
+df = pd.DataFrame(news_list)
 
 # --------------------------------------------------------------
-# Cleaning / typing (same as before)
+# Transformations equivalent to your M code
 # --------------------------------------------------------------
-numeric_cols = [
-    "current_price",
-    "previous_close",
-    "change_percent",
-    "pct_change_7d",
-    "volume",
-    "market_cap",
-    "shares_outstanding",
-]
-text_cols = ["symbol", "name", "sector", "market"]
-date_col = "trade_date"
+text_cols = ["title", "link", "description", "image", "source"]
 
-for col in numeric_cols:
-    if col not in df.columns:
-        df[col] = 0
+# Ensure text columns exist
 for col in text_cols:
     if col not in df.columns:
         df[col] = None
-if date_col not in df.columns:
-    df[date_col] = None
 
-for col in numeric_cols:
-    df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0)
-
+# Trim text
 for col in text_cols:
-    if col in df.columns:
-        df[col] = df[col].apply(lambda x: x.strip() if isinstance(x, str) else x)
+    df[col] = df[col].apply(lambda x: x.strip() if isinstance(x, str) else x)
 
-if "symbol" in df.columns:
-    df["symbol"] = df["symbol"].apply(lambda x: x.upper() if isinstance(x, str) else x)
-
-if date_col in df.columns:
-    df[date_col] = pd.to_datetime(df[date_col], errors="coerce", utc=True).dt.date
-
+# Blank text to null
 for col in text_cols:
-    if col in df.columns:
-        df[col] = df[col].apply(
-            lambda x: None if (isinstance(x, str) and x == "") else x
-        )
+    df[col] = df[col].apply(lambda x: None if (isinstance(x, str) and x == "") else x)
+
+# published_at as date (if present)
+if "published_at" in df.columns:
+    df["published_at"] = pd.to_datetime(
+        df["published_at"], errors="coerce", utc=True
+    ).dt.date
 
 # --------------------------------------------------------------
-# Write to CSV: C:\NGX\DailyStocksData\ngxmkt_stocks_TIMESTAMP.csv
+# Write to CSV: C:\NGX\DailyStocksNews\ngxmkt_news_TIMESTAMP.csv
 # --------------------------------------------------------------
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-filename = f"ngxmkt_stocks_{timestamp}.csv"
+filename = f"ngxmkt_news_{timestamp}.csv"
 filepath = os.path.join(OUTPUT_DIR, filename)
 
 df.to_csv(filepath, index=False, encoding="utf-8")

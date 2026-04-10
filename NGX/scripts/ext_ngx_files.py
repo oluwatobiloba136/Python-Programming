@@ -8,8 +8,10 @@ from datetime import datetime
 # USER‑CONFIGURABLE SETTINGS
 # --------------------------------------------------------------
 BASE_URL = "https://doclib.ngxgroup.com"          # NGX SharePoint site
-ISIN     = "NGZENITHBNK9"  #"YOUR_ISIN_HERE"                      # <-- set the ISIN of the target company
-OUTPUT_BASE_DIR =  "ZENITH"  # "extracted_data"               # base folder for company‑specific subfolders
+ISIN = "NGZENITHBNK9"                             # <-- set the ISIN of the target company
+
+# Root output directory for all companies
+OUTPUT_ROOT_DIR = r"C:\NGX\ListedCompanies"
 
 # List of Type_of_Submission values you want to retrieve.
 TYPES_OF_INTEREST = [
@@ -77,8 +79,8 @@ def fetch_all_items(session, url):
         url = data.get("d", {}).get("__next")  # pagination link
 
 def main():
-    # Prepare output folder for this ISIN
-    company_folder = os.path.join(OUTPUT_BASE_DIR, ISIN)
+    # Prepare output folder for this ISIN under C:\NGX\ListedCompanies\<ISIN>
+    company_folder = os.path.join(OUTPUT_ROOT_DIR, ISIN)
     os.makedirs(company_folder, exist_ok=True)
 
     endpoint = build_endpoint(ISIN, TYPES_OF_INTEREST)
