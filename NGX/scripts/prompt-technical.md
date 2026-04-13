@@ -1,6 +1,8 @@
 # Stock Technical Analysis Prompt
 
-You are an expert technical analyst. Conduct a complete technical analysis of **[Company Name/Ticker]** using the framework below. Your goal is to identify trading opportunities, determine optimal entry/exit points, and assess the probability of continued price movement based on historical price patterns, volume, and technical indicators.
+You are an expert technical analyst. Conduct a complete technical analysis of **FCMB** using the framework below. Your goal is to identify trading opportunities, determine optimal entry/exit points, and assess the probability of continued price movement based on historical price patterns, volume, and technical indicators.
+
+Rcomend if to buy the stock now, 7 days, 14 days etc
 
 ## 1. Core Principles & Approach
 - **Understand the foundational premise**: Price discounts all information, history tends to repeat, and prices move in trends.
@@ -8,7 +10,7 @@ You are an expert technical analyst. Conduct a complete technical analysis of **
 - **Choose chart type**: Candlestick (preferred for price action), OHLC bar, line, or Heikin-Ashi based on analysis needs.
 - **Establish the primary trend**: Use higher timeframes to determine the dominant direction before analyzing lower timeframes for entries.
 
-*Source: Tiingo’s explanation of technical vs. fundamental analysis*
+
 
 ## 2. Trend Analysis
 - **Identify trend direction**: Higher highs and higher lows (uptrend), lower highs and lower lows (downtrend), or sideways movement (range-bound).
@@ -94,27 +96,30 @@ You are an expert technical analyst. Conduct a complete technical analysis of **
 - [ ] No major conflicting signals on LTF
 - [ ] Aligns with fundamental outlook (if using combined approach)
 
-- **Nigerian Market Sources** (for NGX-listed stocks like ZENITHBANK):  
- - https://www.ngnmarket.com/stocks/ACCESSCORP 
-  - https://ngxgroup.com/exchange/data/company-profile/?isin=NGACCESS0005&directory=companydirectory
-  - https://www.tradingview.com/chart/?symbol=NSENG%3AACCESSCORP  
-  - https://ngxpulse.ng/stocks/ACCESSCORP   
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/  
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/financials-overview/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/financials-income-statement/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/financials-balance-sheet/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/financials-cash-flow/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/news/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/ideas/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/seasonals/ 
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/forecast/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/technicals/
+- **Nigerian Market Sources** (for NGX-listed stocks like FCMB):  
+    - https://www.ngnmarket.com/stocks/FCMB
+- https://afx.kwayisi.org/ngx/fcmb
+- https://www.african-markets.com/en/stock-markets/ngse/listed-companies/company?code=FCMB
+- https://ngxgroup.com/exchange/data/corporate-disclosures/
+- https://stockanalysis.com/quote/ngx/FCMB/
+- https://stockanalysis.com/quote/ngx/FCMB/company/
+- https://stockanalysis.com/quote/ngx/FCMB/financials/ratios/
+- https://www.tradingview.com/chart/?symbol=NSENG%3AFCMB
+- https://www.tradingview.com/symbols/NSENG-FCMB/
+- https://www.tradingview.com/symbols/NSENG-FCMB/technicals/
+- https://www.tradingview.com/symbols/NSENG-FCMB/news/
+- https://www.tradingview.com/symbols/NSENG-FCMB/ideas/
+- https://www.tradingview.com/symbols/NSENG-FCMB/forecast/
+- https://ca.investing.com/equities/firstcity-bnk
+- https://ng.investing.com/equities/firstcity-bnk-chart
+- https://markets.ft.com/data/equities/tearsheet/summary?s=FCMB:LAG
+- https://www.bloomberg.com/quote/FCMB:NL
 - Always **cite your data** with dates and sources to ensure transparency and reproducibility.  
 - When information conflicts, prioritize **official filings** over third‑party estimates.  
 - Structure your report with clear headings, tables, and charts (where helpful) to enhance readability. Aim for a concise, objective narrative that could be understood by a financially literate audience.  
 
 ## 9. Output a .md file so that i can save it in vscode
-(include a clickable source)
+(include a REAL URL source NOT SOMETHING LKE [WEB:])
 
 give glossary of abbreviation used and give brief expalnation about it and what it indicate
 

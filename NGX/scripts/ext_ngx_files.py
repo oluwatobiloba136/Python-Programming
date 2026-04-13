@@ -8,7 +8,7 @@ from datetime import datetime
 # USER‑CONFIGURABLE SETTINGS
 # --------------------------------------------------------------
 BASE_URL = "https://doclib.ngxgroup.com"          # NGX SharePoint site
-ISIN = "NGACCESS0005"                             # <-- set the ISIN of the target company
+ISIN = "FCMB"                             # <-- set the ISIN of the target company
 
 # Root output directory for all companies
 OUTPUT_ROOT_DIR = r"C:\NGX\ListedCompanies"

@@ -1,7 +1,8 @@
 # Stock Fundamental Analysis Prompt
 
-You are an expert fundamental analyst. Conduct a complete fundamental analysis of **ACCESSCORP** using the framework below. Your goal is to determine whether the stock is undervalued, overvalued, or fairly valued relative to its intrinsic value and make a clear investment recommendation.
+You are an expert fundamental analyst. Conduct a complete fundamental analysis of **FCMB** using the framework below. Your goal is to determine whether the stock is undervalued, overvalued, or fairly valued relative to its intrinsic value and make a clear investment recommendation.
 
+Rcomend if to buy the stock now, 7 days, 14 days etc
 ## 1. Business Model & Qualitative Overview
 - **Describe the company’s core business**: What products/services does it offer? How does it make money? Is revenue recurring or cyclical? Who are its primary customers (SMBs, enterprises, consumers, etc.)?  
 - **Analyze the industry and competitive landscape**: What is the company’s market share? Does it possess a sustainable competitive advantage (moat) such as patents, brand strength, proprietary technology, or network effects?  
@@ -75,27 +76,30 @@ Compare each ratio to at least two direct competitors and the sector average to 
 
 ## 8. Data Sources & Best Practices
 - Use **clean, reliable data** from sources such as SEC filings (10‑K, 10‑Q, 8‑K, DEF 14A), Tiingo’s Fundamental Data API, reputable financial data providers (Bloomberg, Reuters), and the company’s investor relations presentations.  
-- **Nigerian Market Sources** (for NGX-listed stocks like ZENITHBANK):  
-  - https://www.ngnmarket.com/stocks/ACCESSCORP 
-  - https://ngxgroup.com/exchange/data/company-profile/?isin=NGACCESS0005&directory=companydirectory
-  - https://www.tradingview.com/chart/?symbol=NSENG%3AACCESSCORP  
-  - https://ngxpulse.ng/stocks/ACCESSCORP   
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/  
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/financials-overview/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/financials-income-statement/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/financials-balance-sheet/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/financials-cash-flow/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/news/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/ideas/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/seasonals/ 
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/forecast/
-  - https://www.tradingview.com/symbols/NSENG-ACCESSCORP/technicals/
+- **Nigerian Market Sources** (for NGX-listed stocks like FCMB):  
+  - https://www.ngnmarket.com/stocks/FCMB
+- https://afx.kwayisi.org/ngx/fcmb
+- https://www.african-markets.com/en/stock-markets/ngse/listed-companies/company?code=FCMB
+- https://ngxgroup.com/exchange/data/corporate-disclosures/
+- https://stockanalysis.com/quote/ngx/FCMB/
+- https://stockanalysis.com/quote/ngx/FCMB/company/
+- https://stockanalysis.com/quote/ngx/FCMB/financials/ratios/
+- https://www.tradingview.com/chart/?symbol=NSENG%3AFCMB
+- https://www.tradingview.com/symbols/NSENG-FCMB/
+- https://www.tradingview.com/symbols/NSENG-FCMB/technicals/
+- https://www.tradingview.com/symbols/NSENG-FCMB/news/
+- https://www.tradingview.com/symbols/NSENG-FCMB/ideas/
+- https://www.tradingview.com/symbols/NSENG-FCMB/forecast/
+- https://ca.investing.com/equities/firstcity-bnk
+- https://ng.investing.com/equities/firstcity-bnk-chart
+- https://markets.ft.com/data/equities/tearsheet/summary?s=FCMB:LAG
+- https://www.bloomberg.com/quote/FCMB:NL
 - Always **cite your data** with dates and sources to ensure transparency and reproducibility.  
 - When information conflicts, prioritize **official filings** over third‑party estimates.  
 - Structure your report with clear headings, tables, and charts (where helpful) to enhance readability. Aim for a concise, objective narrative that could be understood by a financially literate audience.  
 
 ## 9. Output a .md file so that i can save it in vscode
-(include a clickable source)
+(make sure to include a real url source) not [web:7]
 
 give glossary of abbreviation used and give brief expalnation about it and what it indicate
 
