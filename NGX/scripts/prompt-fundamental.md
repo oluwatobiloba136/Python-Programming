@@ -1,6 +1,6 @@
 # Stock Fundamental Analysis Prompt
 
-You are an expert fundamental analyst. Conduct a complete fundamental analysis of **FCMB** using the framework below. Your goal is to determine whether the stock is undervalued, overvalued, or fairly valued relative to its intrinsic value and make a clear investment recommendation.
+You are an expert fundamental analyst. Conduct a complete fundamental analysis of **NGNGXGROUP09** using the framework below. Your goal is to determine whether the stock is undervalued, overvalued, or fairly valued relative to its intrinsic value and make a clear investment recommendation.
 
 Rcomend if to buy the stock now, 7 days, 14 days etc
 ## 1. Business Model & Qualitative Overview
@@ -76,33 +76,68 @@ Compare each ratio to at least two direct competitors and the sector average to 
 
 ## 8. Data Sources & Best Practices
 - Use **clean, reliable data** from sources such as SEC filings (10‑K, 10‑Q, 8‑K, DEF 14A), Tiingo’s Fundamental Data API, reputable financial data providers (Bloomberg, Reuters), and the company’s investor relations presentations.  
-- **Nigerian Market Sources** (for NGX-listed stocks like FCMB):  
-  - https://www.ngnmarket.com/stocks/FCMB
-- https://afx.kwayisi.org/ngx/fcmb
-- https://www.african-markets.com/en/stock-markets/ngse/listed-companies/company?code=FCMB
-- https://ngxgroup.com/exchange/data/corporate-disclosures/
-- https://stockanalysis.com/quote/ngx/FCMB/
-- https://stockanalysis.com/quote/ngx/FCMB/company/
-- https://stockanalysis.com/quote/ngx/FCMB/financials/ratios/
-- https://www.tradingview.com/chart/?symbol=NSENG%3AFCMB
-- https://www.tradingview.com/symbols/NSENG-FCMB/
-- https://www.tradingview.com/symbols/NSENG-FCMB/technicals/
-- https://www.tradingview.com/symbols/NSENG-FCMB/news/
-- https://www.tradingview.com/symbols/NSENG-FCMB/ideas/
-- https://www.tradingview.com/symbols/NSENG-FCMB/forecast/
-- https://ca.investing.com/equities/firstcity-bnk
-- https://ng.investing.com/equities/firstcity-bnk-chart
-- https://markets.ft.com/data/equities/tearsheet/summary?s=FCMB:LAG
-- https://www.bloomberg.com/quote/FCMB:NL
+# Aradel Holdings Plc (ARADEL) – Reference URLs (Markdown Ready)
+
+## 1. Local Quote & Snapshot
+
+- NGNMarket‑style stats (similar role, but for ARADEL):
+  - https://www.ngnmarket.com/stocks/ARADEL  *(if 404, search “ngnmarket aradel” and update)*  
+
+- AFX tps://afx.kwayisi.org/ngx/aradel.html  
+
+- AfricanFinancials – profile, documents, annuals:
+  - https://africanfinancials.com/company/ng-aradel/  
+
+- NGX company profile (price, trading info, sector, news, filings):
+  - https://ngxgroup.com/exchange/data/company-profile/?symbol=ARADEL&directory=companydirectory  
+
+- NGX generic corporate disclosures search (for RNS‑style docs):
+  - https://ngxgroup.com/exchange/data/corporate-disclosures/  
+
+---
+
+## 2. Fundamentals & Ratios
+
+- Investing.com NG – company profile, ratios, brief overview:
+  - httplive quote & basic ratios (direct analogue to `afx.kwayisi.org/ngx/fcmb`):
+  - hts://ng.investing.com/equities/aradel-holdings-company-profile  
+
+- Investing.com CA – quote, chart, some metrics:
+  - https://ca.investing.com/equities/aradel-holdings  
+
+- AfricanFinancials – company overview & links to reports:
+  - https://africanfinancials.com/company/ng-aradel/  
+
+- Company factsheet (business + key metrics – download PDF):
+  - https://www.aradel.com/wp-content/uploads/2023/10/Aradel-Factsheet-2023.pdf  
+
+- Aradel shareholder centre (IR hub: reports, FAQs, registrar info):
+  - https://www.aradel.com/shareholder-center/  
+
+- Marketscreener – valuation, ratios, financials:
+  - https://ca.marketscreener.com/quote/stock/ARADEL-HOLDINGS-PLC-177116297/  
+
+- Morningstar – quote, valuation snapshot:
+  - https://www.morningstar.com/stocks/xnsa/aradel/quote  
+
+- Gurufocus – extended metrics & ratios:
+  - https://www.gurufocus.com/stock/NSA:ARADEL/summary  
+
+
+
+
 - Always **cite your data** with dates and sources to ensure transparency and reproducibility.  
 - When information conflicts, prioritize **official filings** over third‑party estimates.  
 - Structure your report with clear headings, tables, and charts (where helpful) to enhance readability. Aim for a concise, objective narrative that could be understood by a financially literate audience.  
 
 ## 9. Output a .md file so that i can save it in vscode
-(make sure to include a real url source) not [web:7]
+(make sure to include a real url source) not placeholder links
 
 give glossary of abbreviation used and give brief expalnation about it and what it indicate
 
 include table of content
 
  build a **compact ready table** of these ratios (3‑year history plus peers) and a **simple DDM/DCF template** tailored to your modelling style. build it also as markdown not excel
+
+
+ ***TECHNICAL ANALYSIS****

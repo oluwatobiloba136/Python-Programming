@@ -164,3 +164,52 @@ You can paste this block beside your GTCO URLs:
 ```
 
 Save this file and you’ll have the FCMB equivalents sitting next to your GTCO links for future analysis.
+
+
+------------
+
+https://stockanalysis.com/quote/ngx/ARADEL/
+https://stockanalysis.com/quote/ngx/ARADEL/financials/
+https://stockanalysis.com/quote/ngx/ARADEL/financials/balance-sheet/
+https://stockanalysis.com/quote/ngx/ARADEL/financials/cash-flow-statement/
+https://stockanalysis.com/quote/ngx/ARADEL/financials/ratios/
+https://stockanalysis.com/quote/ngx/ARADEL/financials/metrics/
+https://stockanalysis.com/quote/ngx/ARADEL/statistics/
+https://stockanalysis.com/quote/ngx/ARADEL/market-cap/
+https://stockanalysis.com/quote/ngx/ARADEL/revenue/
+https://stockanalysis.com/quote/ngx/ARADEL/dividend/
+https://stockanalysis.com/quote/ngx/ARADEL/history/
+
+<!--  -->
+Stock overview:
+https://stockanalysis.com/quote/ngx/BERGER/
+
+Income statement (financials):
+https://stockanalysis.com/quote/ngx/BERGER/financials/
+
+Balance sheet:
+https://stockanalysis.com/quote/ngx/BERGER/financials/balance-sheet/
+
+Cash flow statement:
+https://stockanalysis.com/quote/ngx/BERGER/financials/cash-flow-statement/
+
+Financial ratios:
+https://stockanalysis.com/quote/ngx/BERGER/financials/ratios/
+
+Business metrics & revenue breakdowns:
+https://stockanalysis.com/quote/ngx/BERGER/financials/metrics/
+
+Statistics (valuation, volatility, etc.):
+https://stockanalysis.com/quote/ngx/BERGER/statistics/
+
+Market cap & net worth:
+https://stockanalysis.com/quote/ngx/BERGER/market-cap/
+
+Revenue history:
+https://stockanalysis.com/quote/ngx/BERGER/revenue/
+
+Dividend history:
+https://stockanalysis.com/quote/ngx/BERGER/dividend/
+
+Historical price data:
+https://stockanalysis.com/quote/ngx/BERGER/history/

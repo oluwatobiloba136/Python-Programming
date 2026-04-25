@@ -1,6 +1,6 @@
 # Stock Technical Analysis Prompt
 
-You are an expert technical analyst. Conduct a complete technical analysis of **FCMB** using the framework below. Your goal is to identify trading opportunities, determine optimal entry/exit points, and assess the probability of continued price movement based on historical price patterns, volume, and technical indicators.
+You are an expert technical analyst. Conduct a complete technical analysis of **NGXGROUP** using the framework below. Your goal is to identify trading opportunities, determine optimal entry/exit points, and assess the probability of continued price movement based on historical price patterns, volume, and technical indicators.
 
 Rcomend if to buy the stock now, 7 days, 14 days etc
 
@@ -96,30 +96,103 @@ Rcomend if to buy the stock now, 7 days, 14 days etc
 - [ ] No major conflicting signals on LTF
 - [ ] Aligns with fundamental outlook (if using combined approach)
 
-- **Nigerian Market Sources** (for NGX-listed stocks like FCMB):  
-    - https://www.ngnmarket.com/stocks/FCMB
-- https://afx.kwayisi.org/ngx/fcmb
-- https://www.african-markets.com/en/stock-markets/ngse/listed-companies/company?code=FCMB
-- https://ngxgroup.com/exchange/data/corporate-disclosures/
-- https://stockanalysis.com/quote/ngx/FCMB/
-- https://stockanalysis.com/quote/ngx/FCMB/company/
-- https://stockanalysis.com/quote/ngx/FCMB/financials/ratios/
-- https://www.tradingview.com/chart/?symbol=NSENG%3AFCMB
-- https://www.tradingview.com/symbols/NSENG-FCMB/
-- https://www.tradingview.com/symbols/NSENG-FCMB/technicals/
-- https://www.tradingview.com/symbols/NSENG-FCMB/news/
-- https://www.tradingview.com/symbols/NSENG-FCMB/ideas/
-- https://www.tradingview.com/symbols/NSENG-FCMB/forecast/
-- https://ca.investing.com/equities/firstcity-bnk
-- https://ng.investing.com/equities/firstcity-bnk-chart
-- https://markets.ft.com/data/equities/tearsheet/summary?s=FCMB:LAG
-- https://www.bloomberg.com/quote/FCMB:NL
+
+## 8. Data Sources & Best Practices
+- Use **clean, reliable data** from sources such as SEC filings (10‑K, 10‑Q, 8‑K, DEF 14A), Tiingo’s Fundamental Data API, reputable financial data providers (Bloomberg, Reuters), and the company’s investor relations presentations.  
+# NGXGROUP_Links_Reference_20260413.md
+
+## 1. Official NGX & Issuer Pages
+
+- Company profile (NGX site)  
+  https://ngxgroup.com/exchange/data/company-profile/?symbol=NGXGROUP&directory=companydirectory
+
+- Corporate disclosures (all issuers)  
+  https://ngxgroup.com/exchange/data/corporate-disclosures/
+
+- NGX Group main site  
+  https://ngxgroup.com/
+
+- Investor relations landing  
+  https://ngxgroup.com/investor-relations/
+
+- NGX Exchange (market information)  
+  https://ngxgroup.com/exchange/
+
+---
+
+## 2. Financials, Results & Governance (Issuer)
+
+- Financial statements & reports  
+  https://ngxgroup.com/investor-relations/financials/
+
+- Market announcements / IR news  
+  https://ngxgroup.com/investor-relations/announcements/
+
+- Corporate governance  
+  https://ngxgroup.com/investor-relations/corporate-governance/
+
+---
+
+## 3. Quote, Price & Fundamentals Aggregators
+
+- AFX Kwayisi (NGX quote + stats)  
+  https://afx.kwayisi.org/ngx/ngxgroup.html
+
+- Stock Analysis (US‑style summary + financials)  
+  https://stockanalysis.com/quote/ngx/NGXGROUP/
+
+- Investing.com Nigeria – company profile  
+  https://ng.investing.com/equities/ngx-group-plc
+
+- Investing.com Canada – quote  
+  https://ca.investing.com/equities/ngx-group-plc
+
+- FT Markets – tearsheet summary  
+  https://markets.ft.com/data/equities/tearsheet/summary?s=NGXGROUP:LAG
+
+- Morningstar – quote page  
+  https://www.morningstar.com/stocks/xnsa/ngxgroup/quote
+
+- GuruFocus – summary  
+  https://www.gurufocus.com/stock/NSA:NGXGROUP/summary
+
+- MyStocks Africa – local quote + chart  
+  https://mystocks.africa/stocks/ngx-group-plc-ngx
+
+---
+
+## 4. Charts, Technicals & Forecasts
+
+- TradingView – chart (direct symbol)  
+  https://www.tradingview.com/chart/?symbol=NSENG%3ANGXGROUP
+
+- TradingView – symbol overview  
+  https://www.tradingview.com/symbols/NSENG-NGXGROUP/
+
+- TradingView – technical summary  
+  https://www.tradingview.com/symbols/NSENG-NGXGROUP/technicals/
+
+- TradingView – forecast ideas  
+  https://www.tradingview.com/symbols/NSENG-NGXGROUP/forecast/
+
+---
+
+## 5. Additional Market Data / News
+
+- Bloomberg – quote page  
+  https://www.bloomberg.com/quote/NGXGROUP:NL
+```
+
+If you want a **one‑pager .md** for ARADEL like the FCMB fundamental prompt (FA+TA templates pre‑wired to these URLs), I can draft that next.
+- Always **cite your data** with dates and sources to ensure transparency and reproducibility.  
+- When information conflicts, prioritize **official filings** over third‑party estimates.  
+- Structure your report with clear headings, tables, and charts (where helpful) to enhance readability. Aim for a concise, objective narrative that could be understood by a financially literate audience.
 - Always **cite your data** with dates and sources to ensure transparency and reproducibility.  
 - When information conflicts, prioritize **official filings** over third‑party estimates.  
 - Structure your report with clear headings, tables, and charts (where helpful) to enhance readability. Aim for a concise, objective narrative that could be understood by a financially literate audience.  
 
 ## 9. Output a .md file so that i can save it in vscode
-(include a REAL URL source NOT SOMETHING LKE [WEB:])
+(include a REAL URL source NOT not placeholder links
 
 give glossary of abbreviation used and give brief expalnation about it and what it indicate
 

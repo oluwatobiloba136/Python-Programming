@@ -88,7 +88,6 @@ cols = [
     "OFFICIAL_OPEN",
     "OFFICIAL_CLOSE",
 ]
-# keep intersection only to avoid KeyError if API changes
 keep = [c for c in cols if c in df.columns]
 df = df[keep]
 
@@ -119,10 +118,8 @@ for col in numeric_cols:
     if col in df.columns:
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
-int_cols = ["Volume", "MarketCap", "SharesOutstanding", "ID"]
-for col in int_cols:
-    if col in df.columns:
-        df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
+# If you don't strictly need nullable ints, keep them as floats to avoid cast errors
+# (Volume, MarketCap, SharesOutstanding, ID will already be numeric from above)
 
 # Date conversions
 date_cols_from_tz = [
@@ -133,9 +130,7 @@ date_cols_from_tz = [
 ]
 for col in date_cols_from_tz:
     if col in df.columns:
-        # try with timezone then plain date
         dt = pd.to_datetime(df[col], errors="coerce", utc=True)
-        # if all NaT, try without utc
         if dt.isna().all():
             dt = pd.to_datetime(df[col], errors="coerce")
         df[col] = dt.dt.date
@@ -212,7 +207,7 @@ if "Symbol2" in df.columns:
 df["ExtractDate"] = datetime.now().date()
 
 # --------------------------------------------------------------
-# Write to CSV: C:\NGX\DailyStocksCompanies\ngxmkt_companies_TIMESTAMP.csv
+# Write to CSV
 # --------------------------------------------------------------
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

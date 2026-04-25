@@ -1,6 +1,6 @@
 # Integrated Fundamental + Technical Trading Summary Prompt
 
-You are an expert **equity analyst** (fundamental + technical) focused on **FCMB**.  
+You are an expert **equity analyst** (fundamental + technical) focused on **NGXGROUP**.  
 Assume that detailed **fundamental and technical analysis** of the stock has ALREADY been done in earlier steps (separate prompts / files).  
 Your job NOW is ONLY to produce a **concise, actionable trading note** and a **Markdown file** that I can save in VS Code.
 
@@ -18,6 +18,8 @@ Your job NOW is ONLY to produce a **concise, actionable trading note** and a **M
 
 Use all previously derived **fundamental** and **technical** insights as given (don’t re‑derive from scratch).  
 If exact numbers are missing, state reasonable ranges and clearly mark them as **approximate**.
+
+use real link not placeholder links
 
 ---
 
