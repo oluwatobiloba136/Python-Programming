@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CDN Database Catalog & Reference</title>
+  <style>
+    :root {
+      --navy: #163b63;
+      --blue: #bfe7f6;
+      --border: #d9e2ec;
+      --text: #17202a;
+      --muted: #607080;
+      --bg: #f7fbfe;
+      --card: #fff;
+      --shadow: 0 10px 24px rgba(22, 59, 99, .12);
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      font-family: Segoe UI, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg)
+    }
+
+    header {
+      padding: 22px 28px 14px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border)
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px
+    }
+
+    .subtitle {
+      font-weight: 600;
+      color: #111
+    }
+
+    .layout {
+      padding: 22px 28px 36px
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px
+    }
+
+    .field {
+      background: var(--card);
+      border-radius: 7px;
+      box-shadow: var(--shadow);
+      border: 1px solid #c9ddeb;
+      overflow: hidden
+    }
+
+    .field label {
+      display: block;
+      background: var(--blue);
+      color: #14506c;
+      padding: 5px 12px;
+      font-size: 16px
+    }
+
+    .searchbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px
+    }
+
+    .icon {
+      font-size: 13px;
+      font-weight: 800;
+      color: #7a8790;
+      text-transform: uppercase
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid #bfc8d2;
+      background: #fff;
+      height: 36px;
+      padding: 6px 8px;
+      font-size: 15px
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 12px;
+      margin: 8px 0 18px
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, .05)
+    }
+
+    .num {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--navy)
+    }
+
+    .lbl {
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .04em
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px
+    }
+
+    .tab {
+      border: 1px solid var(--border);
+      background: var(--card);
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      font-weight: 600
+    }
+
+    .tab.active {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy)
+    }
+
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      overflow: auto;
+      max-height: calc(100vh - 330px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, .06)
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      background: var(--navy);
+      color: #fff;
+      text-align: left;
+      padding: 9px 10px;
+      font-size: 13px;
+      white-space: nowrap
+    }
+
+    tbody td {
+      border-bottom: 1px solid #edf1f5;
+      padding: 7px 10px;
+      font-size: 13px;
+      white-space: nowrap
+    }
+
+    tbody tr:hover {
+      background: #eef8fc
+    }
+
+    .status {
+      margin: 10px 0;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px
+    }
+
+    .btn {
+      background: var(--navy);
+      color: white;
+      border: 0;
+      padding: 9px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700
+    }
+
+    .btn.secondary {
+      background: #5d748c
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    .empty {
+      padding: 26px;
+      color: var(--muted)
+    }
+
+    @media(max-width:1000px) {
+
+      .toolbar,
+      .cards {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>CDN Database Catalog & Reference</h1>
+    <div class="subtitle">Centralized metadata repository for database objects, columns, dependencies, and definitions.
+    </div>
+  </header>
+  <main class="layout">
+    <section class="toolbar">
+      <div class="field"><label>All Database</label>
+        <div class="searchbox"><span class="icon">Find</span><select id="databaseFilter"></select></div>
+      </div>
+      <div class="field"><label>Object Type</label>
+        <div class="searchbox"><span class="icon">Find</span><select id="typeFilter"></select></div>
+      </div>
+      <div class="field"><label>Search Everything</label>
+        <div class="searchbox"><span class="icon">Find</span><input id="searchInput"
+            placeholder="table, view, column, procedure..." /></div>
+      </div>
+      <div class="field"><label>Load catalog.json</label>
+        <div class="searchbox"><input id="fileInput" type="file" accept=".json,application/json" /></div>
+      </div>
+    </section>
+    <section class="cards" id="stats"></section>
+    <section class="tabs" id="tabs"></section>
+    <section class="status">
+      <div id="resultStatus">Loading catalog...</div>
+      <div class="actions"><button class="btn secondary" id="clearBtn">Clear</button><button class="btn"
+          id="csvBtn">Export Visible CSV</button></div>
+    </section>
+    <section class="table-wrap" id="tableWrap"></section>
+  </main>
+  <script>
+    window.__CATALOG_DATA__ = null;
+    const state = { catalog: null, activeSection: 'tables', visibleRows: [], columns: [] };
+    const order = ['databases', 'tables', 'views', 'columns', 'procedures', 'dependencies'];
+    const el = id => document.getElementById(id);
+    const text = v => v === null || v === undefined ? '' : String(v);
+    const lower = v => text(v).toLowerCase();
+    const fmt = n => Number(n || 0).toLocaleString();
+    function esc(v) { return text(v).replace(/[&<>'"]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[ch])); }
+    async function loadCatalog() { if (window.__CATALOG_DATA__) return window.__CATALOG_DATA__; const r = await fetch('catalog.json', { cache: 'no-store' }); if (!r.ok) throw new Error('catalog.json not found. Use the file picker or open catalog_embedded.html.'); return await r.json(); }
+    function sections() { const s = Object.keys(state.catalog.sections || {}); const first = order.filter(x => s.includes(x)); return first.concat(s.filter(x => !first.includes(x))); }
+    function fillSelect(select, values) { select.innerHTML = values.map(v => `<option value="${esc(v)}">${esc(v)}</option>`).join(''); }
+    function initFilters() { const f = state.catalog.index?.filters || {}; fillSelect(el('databaseFilter'), ['All Database'].concat(f.database_names || [])); fillSelect(el('typeFilter'), ['All Object Type'].concat(f.object_types || [])); }
+    function renderStats() { const stats = state.catalog.index?.stats || {}; el('stats').innerHTML = sections().map(n => `<div class="card"><div class="num">${fmt(stats[n])}</div><div class="lbl">${esc(n)}</div></div>`).join(''); }
+    function renderTabs() { el('tabs').innerHTML = sections().map(n => `<button class="tab ${n === state.activeSection ? 'active' : ''}" data-section="${esc(n)}">${esc(n)}</button>`).join(''); }
+    function rowMatches(row, term, db, type) {
+      if (db !== 'All Database') { const k = Object.keys(row).find(x => x.toUpperCase() === 'DATABASE_NAME'); if (!k || text(row[k]) !== db) return false; }
+      if (type !== 'All Object Type') { const k = Object.keys(row).find(x => ['OBJECT_TYPE', 'TYPE_DESC'].includes(x.toUpperCase())); if (!k || text(row[k]) !== type) return false; }
+      return !term || Object.values(row).some(v => lower(v).includes(term));
+    }
+    function getColumns(rows) { const seen = new Set(), cols = []; for (const row of rows.slice(0, 300)) { Object.keys(row).forEach(k => { if (!seen.has(k)) { seen.add(k); cols.push(k); } }); } return cols; }
+    function applyFilters() { const rows = state.catalog.sections[state.activeSection] || []; const term = lower(el('searchInput').value.trim()); const db = el('databaseFilter').value; const type = el('typeFilter').value; state.visibleRows = rows.filter(r => rowMatches(r, term, db, type)); state.columns = getColumns(state.visibleRows.length ? state.visibleRows : rows); renderTable(); }
+    function renderTable() { const rows = state.visibleRows, cols = state.columns; el('resultStatus').textContent = `${fmt(rows.length)} result(s) in ${state.activeSection}`; if (!rows.length) { el('tableWrap').innerHTML = '<div class="empty">No records match the current filters.</div>'; return; } const max = 1000; const body = rows.slice(0, max).map(r => `<tr>${cols.map(c => `<td title="${esc(r[c])}">${esc(r[c])}</td>`).join('')}</tr>`).join(''); el('tableWrap').innerHTML = `<table><thead><tr>${cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table>`; if (rows.length > max) el('resultStatus').textContent += `, showing first ${fmt(max)}`; }
+    function exportCsv() { const cols = state.columns; const lines = [cols.join(',')].concat(state.visibleRows.map(r => cols.map(c => { const v = text(r[c]).replace(/"/g, '""'); return /[",\n]/.test(v) ? `"${v}"` : v; }).join(','))); const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `cdn_catalog_${state.activeSection}.csv`; a.click(); URL.revokeObjectURL(url); }
+    function clearFilters() { el('searchInput').value = ''; el('databaseFilter').selectedIndex = 0; el('typeFilter').selectedIndex = 0; applyFilters(); }
+    function initApp() { initFilters(); renderStats(); renderTabs(); applyFilters(); }
+    function wire() { el('searchInput').addEventListener('input', applyFilters); el('databaseFilter').addEventListener('change', applyFilters); el('typeFilter').addEventListener('change', applyFilters); el('clearBtn').addEventListener('click', clearFilters); el('csvBtn').addEventListener('click', exportCsv); el('tabs').addEventListener('click', e => { const b = e.target.closest('[data-section]'); if (!b) return; state.activeSection = b.dataset.section; renderTabs(); applyFilters(); }); el('fileInput').addEventListener('change', async e => { const file = e.target.files[0]; if (!file) return; state.catalog = JSON.parse(await file.text()); state.activeSection = sections().includes('tables') ? 'tables' : sections()[0]; initApp(); }); }
+    (async function main() { wire(); try { state.catalog = await loadCatalog(); state.activeSection = sections().includes('tables') ? 'tables' : sections()[0]; initApp(); } catch (err) { el('resultStatus').textContent = err.message; el('tableWrap').innerHTML = '<div class="empty">Load catalog.json with the file picker, or generate catalog_embedded.html using the Python export job.</div>'; } })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Database Explorer</title>
+
+<style>
+
+:root{
+    --primary:#2563eb;
+    --primary-dark:#1d4ed8;
+    --border:#dce3ea;
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#1e293b;
+    --muted:#64748b;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Segoe UI,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+.header{
+    background:white;
+    border-bottom:1px solid var(--border);
+    padding:20px 30px;
+}
+
+.header h1{
+    font-size:28px;
+}
+
+.header p{
+    color:var(--muted);
+    margin-top:5px;
+}
+
+.container{
+    padding:20px;
+}
+
+.search-container{
+    margin-bottom:20px;
+}
+
+.search-box{
+    width:100%;
+    padding:14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:16px;
+}
+
+.search-box:focus{
+    outline:none;
+    border-color:var(--primary);
+}
+
+.stats{
+    display:flex;
+    gap:20px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:15px;
+    min-width:180px;
+}
+
+.card-title{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.card-value{
+    font-size:26px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+.table-container{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#f1f5f9;
+    position:sticky;
+    top:0;
+}
+
+th{
+    text-align:left;
+    padding:12px;
+    border-bottom:1px solid var(--border);
+    white-space:nowrap;
+}
+
+td{
+    padding:10px 12px;
+    border-bottom:1px solid #eee;
+    white-space:nowrap;
+}
+
+tr:hover{
+    background:#f8fafc;
+}
+
+.loading{
+    padding:30px;
+    text-align:center;
+}
+
+.no-results{
+    padding:30px;
+    text-align:center;
+    color:var(--muted);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h1>Database Explorer</h1>
+    <p>Full Text Search</p>
+</div>
+
+<div class="container">
+
+    <div class="search-container">
+        <input
+            id="searchBox"
+            class="search-box"
+            type="text"
+            placeholder="Search anything..."
+        >
+    </div>
+
+    <div class="stats">
+
+        <div class="card">
+            <div class="card-title">
+                Total Records
+            </div>
+            <div id="totalRecords" class="card-value">
+                0
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                Search Results
+            </div>
+            <div id="resultCount" class="card-value">
+                0
+            </div>
+        </div>
+
+    </div>
+
+    <div class="table-container">
+
+        <div id="loading" class="loading">
+            Loading data...
+        </div>
+
+        <table id="resultsTable" style="display:none;">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+
+let allData = [];
+let columns = [];
+
+// ======================================
+// LOAD JSON
+// ======================================
+
+async function loadData(){
+
+    try{
+
+        const response =
+            await fetch("customers.json");
+
+        allData =
+            await response.json();
+
+        document
+            .getElementById("loading")
+            .style.display = "none";
+
+        document
+            .getElementById("resultsTable")
+            .style.display = "table";
+
+        document
+            .getElementById("totalRecords")
+            .innerText = allData.length;
+
+        columns =
+            Object.keys(allData[0] || {});
+
+        buildHeaders();
+
+        displayResults(allData);
+
+    }
+    catch(error){
+
+        document
+            .getElementById("loading")
+            .innerHTML =
+            "Unable to load customers.json";
+
+        console.error(error);
+    }
+}
+
+// ======================================
+// BUILD TABLE HEADERS
+// ======================================
+
+function buildHeaders(){
+
+    let html = "<tr>";
+
+    columns.forEach(col => {
+
+        html += `<th>${col}</th>`;
+
+    });
+
+    html += "</tr>";
+
+    document
+        .getElementById("tableHead")
+        .innerHTML = html;
+}
+
+// ======================================
+// DISPLAY RESULTS
+// ======================================
+
+function displayResults(rows){
+
+    const body =
+        document.getElementById("tableBody");
+
+    document
+        .getElementById("resultCount")
+        .innerText = rows.length;
+
+    if(rows.length === 0){
+
+        body.innerHTML = `
+        <tr>
+            <td colspan="${columns.length}">
+                <div class="no-results">
+                    No Results Found
+                </div>
+            </td>
+        </tr>`;
+
+        return;
+    }
+
+    body.innerHTML =
+        rows
+        .slice(0,500)
+        .map(row => {
+
+            let tr = "<tr>";
+
+            columns.forEach(col => {
+
+                tr += `<td>${row[col] ?? ""}</td>`;
+
+            });
+
+            tr += "</tr>";
+
+            return tr;
+
+        })
+        .join("");
+}
+
+// ======================================
+// SEARCH
+// ======================================
+
+function searchData(){
+
+    const term =
+        document
+        .getElementById("searchBox")
+        .value
+        .toLowerCase()
+        .trim();
+
+    if(term === ""){
+
+        displayResults(allData);
+
+        return;
+    }
+
+    const results =
+        allData.filter(row =>
+
+            Object.values(row)
+                .join(" ")
+                .toLowerCase()
+                .includes(term)
+
+        );
+
+    displayResults(results);
+}
+
+// ======================================
+// EVENTS
+// ======================================
+
+document
+.getElementById("searchBox")
+.addEventListener(
+    "input",
+    searchData
+);
+
+// ======================================
+// START
+// ======================================
+
+loadData();
+
+</script>
+
+</body>
+</html>
