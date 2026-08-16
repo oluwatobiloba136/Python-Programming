@@ -1,0 +1,32 @@
+[
+    {
+        "database_name":"master",
+        "physical_database_name":"master",
+        "create_date":"2003-04-08T09:13:36.390"
+    },
+    {
+        "database_name":"tempdb",
+        "physical_database_name":"tempdb",
+        "create_date":"2026-08-15T08:05:49.733"
+    },
+    {
+        "database_name":"model",
+        "physical_database_name":"model",
+        "create_date":"2003-04-08T09:13:36.390"
+    },
+    {
+        "database_name":"msdb",
+        "physical_database_name":"msdb",
+        "create_date":"2025-10-21T12:53:13.233"
+    },
+    {
+        "database_name":"TWO16",
+        "physical_database_name":"TWO16",
+        "create_date":"2026-08-13T13:23:16.090"
+    },
+    {
+        "database_name":"AxDB",
+        "physical_database_name":"AxDB",
+        "create_date":"2026-08-13T13:29:07.727"
+    }
+]

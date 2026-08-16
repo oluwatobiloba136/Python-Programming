@@ -52,10 +52,41 @@ body{
 
 .search-container{
     margin-bottom:20px;
+    display:flex;
+    align-items:flex-end;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.search-field{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+}
+
+.search-label{
+    display:block;
+    width:15%;
+    min-width:180px;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.03em;
+    color:#334155;
+    background:rgba(148, 163, 184, 0.08);
+    border:1px solid rgba(148, 163, 184, 0.22);
+    border-radius:6px;
+    padding:5px 10px;
+    line-height:1.3;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.7);
+    position:static;
+    transform:none;
+    text-align:left;
 }
 
 .search-box{
-    width:100%;
+    width:15%;
+    min-width:180px;
     padding:14px;
     border:1px solid var(--border);
     border-radius:10px;
@@ -97,6 +128,12 @@ body{
     border:1px solid var(--border);
     border-radius:10px;
     overflow:auto;
+    max-height:70vh;
+    max-width:100%;
+}
+
+#resultsTable {
+    min-width: 100%;
 }
 
 table{
@@ -151,12 +188,55 @@ tr:hover{
 <div class="container">
 
     <div class="search-container">
-        <input
-            id="searchBox"
-            class="search-box"
-            type="text"
-            placeholder="Search anything..."
-        >
+        <div class="search-field">
+            <label for="searchBox" class="search-label">All database</label>
+            <input
+                id="searchBox"
+                class="search-box"
+                type="text"
+                placeholder="Search anything..."
+            >
+        </div>
+
+        <div class="search-field">
+            <label for="tableSearchBox" class="search-label">All Table</label>
+            <input
+                id="tableSearchBox"
+                class="search-box"
+                type="text"
+                placeholder="Search tables..."
+            >
+        </div>
+
+        <div class="search-field">
+            <label for="viewSearchBox" class="search-label">All View</label>
+            <input
+                id="viewSearchBox"
+                class="search-box"
+                type="text"
+                placeholder="Search views..."
+            >
+        </div>
+
+        <div class="search-field">
+            <label for="viewDependencySearchBox" class="search-label">View dependencies</label>
+            <input
+                id="viewDependencySearchBox"
+                class="search-box"
+                type="text"
+                placeholder="Search dependencies..."
+            >
+        </div>
+
+        <div class="search-field">
+            <label for="viewReferenceSearchBox" class="search-label">View Reference</label>
+            <input
+                id="viewReferenceSearchBox"
+                class="search-box"
+                type="text"
+                placeholder="Search references..."
+            >
+        </div>
     </div>
 
     <div class="stats">
@@ -198,8 +278,13 @@ tr:hover{
 
 <script>
 
-let allData = [];
+let databaseData = [];
+let tableData = [];
+let viewData = [];
+let viewDependencyData = [];
+let viewReferenceData = [];
 let columns = [];
+let activeSource = "tables";
 
 // ======================================
 // LOAD JSON
@@ -209,11 +294,20 @@ async function loadData(){
 
     try{
 
-        const response =
-            await fetch("customers.json");
+        const [databaseResponse, tableResponse, viewResponse, dependencyResponse, referenceResponse] =
+            await Promise.all([
+                fetch("data/databases.json"),
+                fetch("data/tables.json"),
+                fetch("data/views.json"),
+                fetch("data/view_dep.json"),
+                fetch("data/view_dep_columns.json")
+            ]);
 
-        allData =
-            await response.json();
+        databaseData = await databaseResponse.json();
+        tableData = await tableResponse.json();
+        viewData = await viewResponse.json();
+        viewDependencyData = await dependencyResponse.json();
+        viewReferenceData = await referenceResponse.json();
 
         document
             .getElementById("loading")
@@ -221,18 +315,9 @@ async function loadData(){
 
         document
             .getElementById("resultsTable")
-            .style.display = "table";
+            .style.display = "none";
 
-        document
-            .getElementById("totalRecords")
-            .innerText = allData.length;
-
-        columns =
-            Object.keys(allData[0] || {});
-
-        buildHeaders();
-
-        displayResults(allData);
+        setActiveDataset("tables");
 
     }
     catch(error){
@@ -240,10 +325,35 @@ async function loadData(){
         document
             .getElementById("loading")
             .innerHTML =
-            "Unable to load customers.json";
+            "Unable to load data files";
 
         console.error(error);
     }
+}
+
+function setActiveDataset(source){
+
+    activeSource = source;
+
+    const sourceData =
+        source === "database"
+            ? databaseData
+            : source === "tables"
+                ? tableData
+                : source === "views"
+                    ? viewData
+                    : source === "dependencies"
+                        ? viewDependencyData
+                        : viewReferenceData;
+
+    document
+        .getElementById("totalRecords")
+        .innerText = sourceData.length;
+
+    columns =
+        Object.keys(sourceData[0] || {});
+
+    buildHeaders();
 }
 
 // ======================================
@@ -315,11 +425,21 @@ function displayResults(rows){
         .join("");
 }
 
+function hideResults(){
+
+    const resultsTable =
+        document.getElementById("resultsTable");
+
+    resultsTable.style.display = "none";
+    document.getElementById("resultCount").innerText = "0";
+    document.getElementById("tableBody").innerHTML = "";
+}
+
 // ======================================
 // SEARCH
 // ======================================
 
-function searchData(){
+function searchDatabase(){
 
     const term =
         document
@@ -330,13 +450,14 @@ function searchData(){
 
     if(term === ""){
 
-        displayResults(allData);
-
+        hideResults();
         return;
     }
 
+    setActiveDataset("database");
+
     const results =
-        allData.filter(row =>
+        databaseData.filter(row =>
 
             Object.values(row)
                 .join(" ")
@@ -344,6 +465,146 @@ function searchData(){
                 .includes(term)
 
         );
+
+    document
+        .getElementById("resultsTable")
+        .style.display = "table";
+
+    displayResults(results);
+}
+
+function searchTables(){
+
+    const term =
+        document
+        .getElementById("tableSearchBox")
+        .value
+        .toLowerCase()
+        .trim();
+
+    if(term === ""){
+
+        hideResults();
+        return;
+    }
+
+    setActiveDataset("tables");
+
+    const results =
+        tableData.filter(row =>
+
+            Object.values(row)
+                .join(" ")
+                .toLowerCase()
+                .includes(term)
+
+        );
+
+    document
+        .getElementById("resultsTable")
+        .style.display = "table";
+
+    displayResults(results);
+}
+
+function searchViews(){
+
+    const term =
+        document
+        .getElementById("viewSearchBox")
+        .value
+        .toLowerCase()
+        .trim();
+
+    if(term === ""){
+
+        hideResults();
+        return;
+    }
+
+    setActiveDataset("views");
+
+    const results =
+        viewData.filter(row =>
+
+            Object.values(row)
+                .join(" ")
+                .toLowerCase()
+                .includes(term)
+
+        );
+
+    document
+        .getElementById("resultsTable")
+        .style.display = "table";
+
+    displayResults(results);
+}
+
+function searchViewDependencies(){
+
+    const term =
+        document
+        .getElementById("viewDependencySearchBox")
+        .value
+        .toLowerCase()
+        .trim();
+
+    if(term === ""){
+
+        hideResults();
+        return;
+    }
+
+    setActiveDataset("dependencies");
+
+    const results =
+        viewDependencyData.filter(row =>
+
+            Object.values(row)
+                .join(" ")
+                .toLowerCase()
+                .includes(term)
+
+        );
+
+    document
+        .getElementById("resultsTable")
+        .style.display = "table";
+
+    displayResults(results);
+}
+
+function searchViewReferences(){
+
+    const term =
+        document
+        .getElementById("viewReferenceSearchBox")
+        .value
+        .toLowerCase()
+        .trim();
+
+    if(term === ""){
+
+        hideResults();
+        return;
+    }
+
+    setActiveDataset("references");
+
+    const results =
+        viewReferenceData.filter(row =>
+
+            Object.values(row)
+                .join(" ")
+                .toLowerCase()
+                .includes(term)
+
+        );
+
+    document
+        .getElementById("resultsTable")
+        .style.display = "table";
 
     displayResults(results);
 }
@@ -356,7 +617,35 @@ document
 .getElementById("searchBox")
 .addEventListener(
     "input",
-    searchData
+    searchDatabase
+);
+
+document
+.getElementById("tableSearchBox")
+.addEventListener(
+    "input",
+    searchTables
+);
+
+document
+.getElementById("viewSearchBox")
+.addEventListener(
+    "input",
+    searchViews
+);
+
+document
+.getElementById("viewDependencySearchBox")
+.addEventListener(
+    "input",
+    searchViewDependencies
+);
+
+document
+.getElementById("viewReferenceSearchBox")
+.addEventListener(
+    "input",
+    searchViewReferences
 );
 
 // ======================================
