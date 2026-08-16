@@ -176,7 +176,32 @@ df_vwdef.to_json(
 
 print(f"views_definitions.json exported ({len(df_vwdef)} records)")
 # ==========================================
-# 6. VIEW dependencies - columns
+# 6. Columns
+# OUTPUT: columns.json
+# ==========================================
+
+sql_columns = """
+SELECT
+db_name() AS database_name,
+tables.name AS table_name,
+columns.name AS column_name,
+'Column' AS object_type
+FROM sys.tables
+INNER JOIN sys.columns
+ON tables.object_id = columns.object_id
+"""
+
+df_columns = pd.read_sql(sql_columns, conn)
+
+df_columns.to_json(
+    os.path.join(DATA_DIR, "columns.json"),
+    orient="records",
+    indent=4
+)
+
+print(f"columns.json exported ({len(df_columns)} records)")
+# ==========================================
+# 7. VIEW dependencies - columns
 # OUTPUT: view_dep_columns.json
 # ==========================================
 
