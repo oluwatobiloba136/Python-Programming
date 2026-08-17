@@ -7,6 +7,10 @@
 
 <title>Database Explorer</title>
 
+<!-- Highlight.js for SQL Syntax Highlighting -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
 <style>
 
 :root{
@@ -164,6 +168,116 @@ tr:hover{
     background:#f8fafc;
 }
 
+.table-link{
+    color:var(--primary);
+    text-decoration:none;
+    cursor:pointer;
+    font-weight:500;
+}
+
+.table-link:hover{
+    text-decoration:underline;
+    color:var(--primary-dark);
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    z-index:1000;
+    left:0;
+    top:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+}
+
+.modal-content{
+    background:white;
+    margin:5% auto;
+    padding:20px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    width:85%;
+    max-width:900px;
+    max-height:80vh;
+    overflow:auto;
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    border-bottom:1px solid var(--border);
+    padding-bottom:15px;
+}
+
+.modal-title{
+    font-size:18px;
+    font-weight:bold;
+    color:var(--text);
+}
+
+.close-btn{
+    font-size:28px;
+    font-weight:bold;
+    color:var(--muted);
+    cursor:pointer;
+    background:none;
+    border:none;
+    padding:0;
+    line-height:1;
+}
+
+.close-btn:hover{
+    color:var(--text);
+}
+
+#definitionContent{
+    background:#1e1e1e;
+    border:1px solid var(--border);
+    border-radius:6px;
+    padding:15px;
+    font-family:'Courier New', Courier, monospace;
+    font-size:13px;
+    line-height:1.7;
+    color:#abb2bf;
+    white-space:pre-wrap;
+    word-wrap:break-word;
+    overflow:auto;
+    max-height:600px;
+}
+
+#definitionContent code {
+    font-family:'Courier New', Courier, monospace;
+    background:none;
+}
+
+.hljs {
+    background:#1e1e1e;
+    color:#abb2bf;
+}
+
+.hljs-keyword {
+    color:#56b6f2;
+    font-weight:bold;
+}
+
+.hljs-string {
+    color:#98c379;
+}
+
+.hljs-number {
+    color:#d19a66;
+}
+
+.hljs-literal {
+    color:#56b6f2;
+}
+
+
+
 .loading{
     padding:30px;
     text-align:center;
@@ -237,6 +351,16 @@ tr:hover{
                 placeholder="Search references..."
             >
         </div>
+
+        <div class="search-field">
+            <label for="erdSearchBox" class="search-label">Known Relationships</label>
+            <input
+                id="erdSearchBox"
+                class="search-box"
+                type="text"
+                placeholder="Search joins..."
+            >
+        </div>
     </div>
 
     <div class="stats">
@@ -274,6 +398,17 @@ tr:hover{
 
     </div>
 
+    <!-- View Definition Modal -->
+    <div id="definitionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="definitionTitle" class="modal-title"></span>
+                <button class="close-btn" onclick="closeDefinitionModal()">&times;</button>
+            </div>
+            <pre id="definitionContent"></pre>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -283,6 +418,9 @@ let tableData = [];
 let viewData = [];
 let viewDependencyData = [];
 let viewReferenceData = [];
+let erdData = { relationships: [] };
+let columnsData = [];
+let viewDefinitionsData = [];
 let columns = [];
 let activeSource = "tables";
 
@@ -294,13 +432,16 @@ async function loadData(){
 
     try{
 
-        const [databaseResponse, tableResponse, viewResponse, dependencyResponse, referenceResponse] =
+        const [databaseResponse, tableResponse, viewResponse, dependencyResponse, referenceResponse, columnsResponse, definitionsResponse, erdResponse] =
             await Promise.all([
                 fetch("data/databases.json"),
                 fetch("data/tables.json"),
                 fetch("data/views.json"),
                 fetch("data/view_dep.json"),
-                fetch("data/view_dep_columns.json")
+                fetch("data/view_dep_columns.json"),
+                fetch("data/columns.json"),
+                fetch("data/views_definitions.json"),
+                fetch("data/vw_erd.json")
             ]);
 
         databaseData = await databaseResponse.json();
@@ -308,6 +449,9 @@ async function loadData(){
         viewData = await viewResponse.json();
         viewDependencyData = await dependencyResponse.json();
         viewReferenceData = await referenceResponse.json();
+        columnsData = await columnsResponse.json();
+        viewDefinitionsData = await definitionsResponse.json();
+        erdData = await erdResponse.json();
 
         document
             .getElementById("loading")
@@ -344,7 +488,9 @@ function setActiveDataset(source){
                     ? viewData
                     : source === "dependencies"
                         ? viewDependencyData
-                        : viewReferenceData;
+                        : source === "references"
+                            ? viewReferenceData
+                            : (erdData.relationships || []);
 
     document
         .getElementById("totalRecords")
@@ -381,6 +527,53 @@ function buildHeaders(){
 // DISPLAY RESULTS
 // ======================================
 
+function normalizeObjectName(value){
+    if(value === null || value === undefined){
+        return "";
+    }
+
+    return String(value)
+        .replace(/\[/g, "")
+        .replace(/\]/g, "")
+        .trim()
+        .split(".")
+        .filter(Boolean)
+        .slice(-1)[0] || "";
+}
+
+function renderSourceObjectLink(value){
+    if(value === null || value === undefined || String(value).trim() === ""){
+        return "";
+    }
+
+    const items = String(value)
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+
+    return items.map(item => {
+        const objectName = normalizeObjectName(item);
+
+        const isView = viewData.some(v =>
+            String(v.VIEW_NAME ?? "").toUpperCase() === objectName.toUpperCase()
+        );
+
+        const isTable = tableData.some(t =>
+            String(t.TABLE_NAME ?? "").toUpperCase() === objectName.toUpperCase()
+        );
+
+        if(isView){
+            return `<a href="#" class="table-link" onclick="showViewDefinition('${objectName}'); return false;">${item}</a>`;
+        }
+
+        if(isTable){
+            return `<a href="#" class="table-link" onclick="showTableColumns('${objectName}'); return false;">${item}</a>`;
+        }
+
+        return item;
+    }).join(", ");
+}
+
 function displayResults(rows){
 
     const body =
@@ -413,7 +606,15 @@ function displayResults(rows){
 
             columns.forEach(col => {
 
-                tr += `<td>${row[col] ?? ""}</td>`;
+                if(activeSource === "tables" && col === "TABLE_NAME"){
+                    tr += `<td><a href="#" class="table-link" onclick="showTableColumns('${row[col]}'); return false;">${row[col]}</a></td>`;
+                } else if(activeSource === "views" && col === "VIEW_NAME"){
+                    tr += `<td><a href="#" class="table-link" onclick="showViewDefinition('${row[col]}'); return false;">${row[col]}</a></td>`;
+                } else if(activeSource === "erd" && col === "source object"){
+                    tr += `<td>${renderSourceObjectLink(row[col])}</td>`;
+                } else {
+                    tr += `<td>${row[col] ?? ""}</td>`;
+                }
 
             });
 
@@ -433,6 +634,105 @@ function hideResults(){
     resultsTable.style.display = "none";
     document.getElementById("resultCount").innerText = "0";
     document.getElementById("tableBody").innerHTML = "";
+}
+
+// ======================================
+// SHOW TABLE COLUMNS
+// ======================================
+
+function showTableColumns(tableName){
+
+    const matchingColumns =
+        columnsData.filter(col =>
+            col.table_name.toUpperCase() === tableName.toUpperCase()
+        );
+
+    if(matchingColumns.length === 0){
+        alert(`No columns found for table: ${tableName}`);
+        return;
+    }
+
+    columns = Object.keys(matchingColumns[0] || {});
+    buildHeaders();
+    displayResults(matchingColumns);
+
+    document
+        .getElementById("resultCount")
+        .innerText = matchingColumns.length;
+}
+
+// ======================================
+// SHOW VIEW DEFINITION
+// ======================================
+
+function showViewDefinition(viewName){
+
+    const viewDef =
+        viewDefinitionsData.find(v =>
+            v.object_name.toUpperCase() === viewName.toUpperCase()
+        );
+
+    if(!viewDef){
+        alert(`No definition found for view: ${viewName}`);
+        return;
+    }
+
+    const modal = document.getElementById("definitionModal");
+    const title = document.getElementById("definitionTitle");
+    const content = document.getElementById("definitionContent");
+
+    title.innerText = `View: ${viewDef.object_name}`;
+    
+    // Format and highlight SQL
+    const sqlCode = formatSQL(viewDef.definition);
+    content.innerHTML = `<code class="language-sql">${escapeHtml(sqlCode)}</code>`;
+    
+    // Apply syntax highlighting
+    hljs.highlightElement(content.querySelector('code'));
+
+    modal.style.display = "block";
+}
+
+function formatSQL(sql){
+    // Basic SQL formatting: add line breaks after key clauses
+    let formatted = sql
+        .replace(/\s+/g, ' ') // normalize whitespace
+        .replace(/\bSELECT\b/gi, '\nSELECT')
+        .replace(/\bFROM\b/gi, '\nFROM')
+        .replace(/\bWHERE\b/gi, '\nWHERE')
+        .replace(/\bJOIN\b/gi, '\nJOIN')
+        .replace(/\bINNER\s+JOIN\b/gi, '\nINNER JOIN')
+        .replace(/\bLEFT\s+JOIN\b/gi, '\nLEFT JOIN')
+        .replace(/\bON\b/gi, '\nON')
+        .replace(/\bUNION\b/gi, '\nUNION')
+        .replace(/\bGROUP\s+BY\b/gi, '\nGROUP BY')
+        .replace(/\bORDER\s+BY\b/gi, '\nORDER BY')
+        .replace(/\bHAVING\b/gi, '\nHAVING')
+        .replace(/\bCASE\b/gi, '\nCASE')
+        .replace(/\bWHEN\b/gi, '\n    WHEN')
+        .replace(/\bTHEN\b/gi, ' THEN')
+        .replace(/\bELSE\b/gi, '\n    ELSE')
+        .replace(/\bEND\b/gi, '\nEND');
+    
+    return formatted.trim();
+}
+
+function escapeHtml(text){
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function closeDefinitionModal(){
+    const modal = document.getElementById("definitionModal");
+    modal.style.display = "none";
+}
+
+window.onclick = function(event){
+    const modal = document.getElementById("definitionModal");
+    if(event.target === modal){
+        modal.style.display = "none";
+    }
 }
 
 // ======================================
@@ -609,6 +909,37 @@ function searchViewReferences(){
     displayResults(results);
 }
 
+function searchERD(){
+
+    const term =
+        document
+        .getElementById("erdSearchBox")
+        .value
+        .toLowerCase()
+        .trim();
+
+    if(term === ""){
+        hideResults();
+        return;
+    }
+
+    setActiveDataset("erd");
+
+    const results =
+        (erdData.relationships || []).filter(row =>
+            Object.values(row)
+                .join(" ")
+                .toLowerCase()
+                .includes(term)
+        );
+
+    document
+        .getElementById("resultsTable")
+        .style.display = "table";
+
+    displayResults(results);
+}
+
 // ======================================
 // EVENTS
 // ======================================
@@ -646,6 +977,13 @@ document
 .addEventListener(
     "input",
     searchViewReferences
+);
+
+document
+.getElementById("erdSearchBox")
+.addEventListener(
+    "input",
+    searchERD
 );
 
 // ======================================
